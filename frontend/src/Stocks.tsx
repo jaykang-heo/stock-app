@@ -4,10 +4,10 @@ import styles from './Stocks.module.css';
 
 const Stocks: React.FC = () => {
     const [stocks, setStocks] = useState<string[]>([]);
+    const [jangtaStocks, setJangtaStocks] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [fileName, setFileName] = useState<string>("");
     const [daysAgo, setDaysAgo] = useState<number>(2);
-
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files && event.target.files[0];
@@ -29,7 +29,8 @@ const Stocks: React.FC = () => {
         try {
             const response = await axios.post('http://localhost:8000/upload-csv/', formData);
             console.log(response.data);
-            fetchData();  // Fetch the stock data after uploading the file
+            fetchJangtaData();  // Fetch the jangta stock data after uploading the file
+            fetchData();  // Fetch the danta stock data after uploading the file
         } catch (error) {
             console.error("Error uploading file:", error);
         }
@@ -39,52 +40,85 @@ const Stocks: React.FC = () => {
         setDaysAgo(Number(event.target.value));
     };
 
+    const fetchJangtaData = async () => {
+        setLoading(true);
+        try {
+            const response = await axios.get('http://localhost:8000/stocks/jangta/');
+            setJangtaStocks(response.data);
+        } catch (error) {
+            console.error("Error fetching jangta stocks:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const fetchData = async () => {
         setLoading(true);
         try {
-            const response = await axios.get(`http://localhost:8000/stocks/?days_ago=${daysAgo}`);
+            const response = await axios.get(`http://localhost:8000/stocks/danta/?days_ago=${daysAgo}`);
             setStocks(response.data);
         } catch (error) {
-            console.error("Error fetching stocks:", error);
+            console.error("Error fetching danta stocks:", error);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className={styles.container}>
-            <h2 className={styles.title}>Filtered Stocks</h2>
+    <div className={styles.container}>
+        <h2 className={styles.title}>Filtered Stocks</h2>
 
-            {/*<button className={styles.button} onClick={fetchData}>*/}
-            {/*    Fetch Stocks*/}
-            {/*</button>*/}
+        <label>
+            Days Ago:
+            <input type="number" value={daysAgo} onChange={handleDaysAgoChange} />
+        </label>
+        <input type="file" id="fileInput" onChange={handleFileChange} />
+        <button onClick={handleUploadFile}>Upload CSV</button>
+        {loading && <p>Loading...</p>}
 
-            <label>
-                Days Ago:
-                <input type="number" value={daysAgo} onChange={handleDaysAgoChange} />
-            </label>
+        <div className={styles.flexContainer}>
+            {/* Jangta Stocks Column */}
+            <div className={styles.tableContainer}>
+                <h3>Jangta Stocks</h3>
+                <table className={styles.table}>
+                    <thead>
+                        <tr>
+                            <th>Stock Code</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {jangtaStocks.map(stock => (
+                            <tr key={stock}>
+                                <td>{stock}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
-            <input type="file" id="fileInput" onChange={handleFileChange} />
-            <button onClick={handleUploadFile}>Upload CSV</button>
-
-            {loading && <p>Loading...</p>}
-
-            <table className={styles.table}>
-                <thead>
-                <tr>
-                    <th>Stock Code</th>
-                </tr>
-                </thead>
-                <tbody>
-                {stocks.map(stock => (
-                    <tr key={stock}>
-                        <td>{stock}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+            {/* Danta Stocks Column */}
+            <div className={styles.tableContainer}>
+                <h3>Danta Stocks</h3>
+                <table className={styles.table}>
+                    <thead>
+                        <tr>
+                            <th>Stock Code</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {stocks.map(stock => (
+                            <tr key={stock}>
+                                <td>{stock}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    );
+    </div>
+);
+
+
 }
 
 export default Stocks;

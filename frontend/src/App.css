@@ -28,6 +28,26 @@
   color: #61dafb;
 }
 
+/* Flex container for side-by-side tables */
+.flexContainer {
+  display: flex;
+  justify-content: space-between;  /* Adds space between the tables */
+  width: 100%;  /* Ensures the container takes the full width */
+}
+
+/* Styles for each table container */
+.tableContainer {
+  flex: 1;  /* Each table container will take up an equal amount of space */
+  padding: 0 10px;  /* Adds some padding to each table container */
+  box-sizing: border-box;  /* Ensures padding is included in the width */
+}
+
+/* Optional: Style each table container */
+.flexContainer > div {
+  width: 50%;  /* Each table container takes half the width */
+  padding: 0 10px;  /* Optional: Adds some padding to each table container */
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
