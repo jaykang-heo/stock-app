@@ -8,11 +8,25 @@ const Stocks: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [fileName, setFileName] = useState<string>("");
     const [daysAgo, setDaysAgo] = useState<number>(2);
+    const [channelRangeStocks, setChannelRangeStocks] = useState<string[]>([]);
+
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files && event.target.files[0];
         if (selectedFile) {
             setFileName(selectedFile.name);
+        }
+    };
+
+     const fetchChannelRangeData = async () => {
+        setLoading(true);
+        try {
+            const response = await axios.get('http://localhost:8000/stocks/within-channel-range');
+            setChannelRangeStocks(response.data);
+        } catch (error) {
+            console.error("Error fetching stocks within channel range:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -31,6 +45,7 @@ const Stocks: React.FC = () => {
             console.log(response.data);
             fetchJangtaData();  // Fetch the jangta stock data after uploading the file
             fetchData();  // Fetch the danta stock data after uploading the file
+            fetchChannelRangeData();
         } catch (error) {
             console.error("Error uploading file:", error);
         }
@@ -114,11 +129,27 @@ const Stocks: React.FC = () => {
                     </tbody>
                 </table>
             </div>
+
+            {/* Stocks Within ±5% of Lower Channel Column */}
+            <div className={styles.tableContainer}>
+                <h3>Stocks Within ±7% of Lower Channel</h3>
+                <table className={styles.table}>
+                    <thead>
+                        <tr>
+                            <th>Stock Code</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {channelRangeStocks.map(stock => (
+                            <tr key={stock}>
+                                <td>{stock}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-);
-
-
-}
+);}
 
 export default Stocks;

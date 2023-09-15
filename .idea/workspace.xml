@@ -5,10 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="65582dfa-cfca-4a07-8daa-fba18f993b9f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/stock_analyzer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/stock_file_manager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/stock_routes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/upload_routes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/stock_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/stock_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/Stocks.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Stocks.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/start.sh" beforeDir="false" afterPath="$PROJECT_DIR$/start.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,8 +30,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="TypeScript File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -65,6 +71,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
     &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -138,7 +145,10 @@
       <workItem from="1694327517499" duration="972000" />
       <workItem from="1694328724618" duration="990000" />
       <workItem from="1694345768240" duration="18000" />
-      <workItem from="1694345800592" duration="2769000" />
+      <workItem from="1694345800592" duration="3618000" />
+      <workItem from="1694445230662" duration="53000" />
+      <workItem from="1694445370909" duration="818000" />
+      <workItem from="1694795498156" duration="5744000" />
     </task>
     <servers />
   </component>
@@ -154,6 +164,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/stock_app$main__1_.coverage" NAME="main Coverage Results" MODIFIED="1694321275478" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />
-    <SUITE FILE_PATH="coverage/stock_app$main.coverage" NAME="main Coverage Results" MODIFIED="1694319306621" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/stock_app$main.coverage" NAME="main Coverage Results" MODIFIED="1694798425509" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />
   </component>
 </project>
