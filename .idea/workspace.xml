@@ -5,16 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="65582dfa-cfca-4a07-8daa-fba18f993b9f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/stock_analyzer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/stock_file_manager.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/stock_routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/upload_routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/stock_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/stock_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/Stocks.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Stocks.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/start.sh" beforeDir="false" afterPath="$PROJECT_DIR$/start.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,7 +141,7 @@
       <workItem from="1694345800592" duration="3618000" />
       <workItem from="1694445230662" duration="53000" />
       <workItem from="1694445370909" duration="818000" />
-      <workItem from="1694795498156" duration="5744000" />
+      <workItem from="1694795498156" duration="8518000" />
     </task>
     <servers />
   </component>
