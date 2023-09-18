@@ -113,6 +113,24 @@ const Stocks: React.FC = () => {
         setDaysAgo(days);
     };
 
+   const parseStock = (stock: string): [string, string, number, number?] => {
+        const matches = stock.match(/\('([^']*)', '([^']*)', (\d+(\.\d+)?),? ?(\d+(\.\d+)?)?\)/);
+        if (matches) {
+            return [matches[1], matches[2], Number(matches[3]), matches[5] ? Number(matches[5]) : undefined];
+        }
+        return ["", "", 0];
+    };
+   const handleNameClick = async (stockCode: string) => {
+        try {
+            const response = await axios.get(`http://localhost:8000/stocks/chart/candle/${stockCode}`);
+            console.log(response.data);
+        } catch (error) {
+            console.error(`Error fetching details for stock code ${stockCode}:`, error);
+        }
+    };
+
+
+
     return (
     <div className={styles.container}>
             <h2 className={styles.title}>Filtered Stocks</h2>
@@ -160,34 +178,50 @@ const Stocks: React.FC = () => {
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th>Stock Code</th>
+                            <th>Name</th>
+                            <th>Code</th>
+                            <th>Number</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {stocks.map(stock => (
-                            <tr key={stock}>
-                                <td>{stock}</td>
-                            </tr>
-                        ))}
+                        {channelRangeStocks.map(stock => {
+                            const [name, code, volume] = parseStock(stock);
+                            return (
+                                <tr key={code}>
+                                    <td>{name}</td>
+                                    <td>{code}</td>
+                                    <td>{volume}</td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
 
-            {/* Stocks Within ±5% of Lower Channel Column */}
+            {/* Stocks Within ±7% of Lower Channel Column */}
             <div className={styles.tableContainer}>
                 <h3>Stocks Within ±7% of Lower Channel {channelRangeStocks.length > 0 && <span>- Complete</span>}</h3>
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th>Stock Code</th>
+                            <th>Name</th>
+                            <th>Code</th>
+                            <th>Number</th>
+                            <th>Value</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {channelRangeStocks.map(stock => (
-                            <tr key={stock}>
-                                <td>{stock}</td>
-                            </tr>
-                        ))}
+                        {channelRangeStocks.map(stock => {
+                            const [name, code, volume, percent] = parseStock(stock);
+                            return (
+                                <tr key={code}>
+                                    <td onClick={() => handleNameClick(code)} style={{cursor: 'pointer'}}>{name}</td>
+                                    <td>{code}</td>
+                                    <td>{volume}</td>
+                                    <td>{percent}</td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>

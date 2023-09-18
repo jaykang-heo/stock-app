@@ -1,5 +1,7 @@
 import datetime
 from pykrx import stock
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 
 class StockAnalyzer:
@@ -91,5 +93,48 @@ class StockAnalyzer:
                 ticker_name = stock.get_market_ticker_name(stock_code)
                 data.append((ticker_name, stock_code, latest_data['거래량'].sum(), percent_difference_from_lower_channel))
         return data
+
+    @staticmethod
+    def draw_candle_chart(stock_code: int):
+        TODAY = datetime.datetime.now()
+        THIRTY_DAYS_BEFORE = TODAY - datetime.timedelta(days=240)
+        formatted_30_days_before = THIRTY_DAYS_BEFORE.strftime('%Y%m%d')
+
+        df = stock.get_market_ohlcv(formatted_30_days_before, StockAnalyzer.TODAY, stock_code)
+
+        # Calculate the 20-period price channel
+        df['Upper_Bound'] = df['고가'].rolling(window=20).max()
+        df['Lower_Bound'] = df['저가'].rolling(window=20).min()
+
+        # Create subplots: one for the candlestick, one for the volume bars, and one for the price channel
+        fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
+                            row_heights=[0.7, 0.3],  # 70% for candlestick and 30% for volume
+                            vertical_spacing=0.1)  # Space between plots
+
+        # Add candlestick trace
+        fig.add_trace(go.Candlestick(x=df.index,
+                                     open=df['시가'],
+                                     high=df['고가'],
+                                     low=df['저가'],
+                                     close=df['종가'],
+                                     name='Candlesticks'), row=1, col=1)
+
+        # Add price channel traces
+        fig.add_trace(
+            go.Scatter(x=df.index, y=df['Upper_Bound'], mode='lines', name='Upper Bound', line=dict(color='blue')))
+        fig.add_trace(
+            go.Scatter(x=df.index, y=df['Lower_Bound'], mode='lines', name='Lower Bound', line=dict(color='blue')))
+
+        # Add volume bars trace
+        colors = df['종가'].diff().apply(lambda x: 'red' if x < 0 else 'green')
+        fig.add_trace(go.Bar(x=df.index, y=df['거래량'], name='Volume', marker_color=colors), row=2, col=1)
+
+        fig.update_layout(title=f'Stock {stock_code} Candlestick, Price Channel, and Volume Chart',
+                          xaxis_title='Date',
+                          yaxis_title='Price (₩)',
+                          xaxis_rangeslider_visible=False,
+                          template="plotly_dark")
+
+        fig.show()
 
 
