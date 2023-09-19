@@ -102,11 +102,23 @@ class StockAnalyzer:
 
         df = stock.get_market_ohlcv(formatted_30_days_before, StockAnalyzer.TODAY, stock_code)
 
+        # Calculate the 20-day simple moving average (Middle Band)
+        df['Middle_Band'] = df['종가'].rolling(window=20).mean()
+
+        # Calculate the standard deviation
+        df['STD'] = df['종가'].rolling(window=20).std()
+
+        # Calculate the Upper Bollinger Band
+        df['Upper_Bollinger'] = df['Middle_Band'] + (df['STD'] * 2)
+
+        # Calculate the Lower Bollinger Band
+        df['Lower_Bollinger'] = df['Middle_Band'] - (df['STD'] * 2)
+
         # Calculate the 20-period price channel
         df['Upper_Bound'] = df['고가'].rolling(window=20).max()
         df['Lower_Bound'] = df['저가'].rolling(window=20).min()
 
-        # Create subplots: one for the candlestick, one for the volume bars, and one for the price channel
+        # Create subplots
         fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
                             row_heights=[0.7, 0.3],  # 70% for candlestick and 30% for volume
                             vertical_spacing=0.1)  # Space between plots
@@ -119,6 +131,16 @@ class StockAnalyzer:
                                      close=df['종가'],
                                      name='Candlesticks'), row=1, col=1)
 
+        # Add Bollinger Bands traces
+        fig.add_trace(
+            go.Scatter(x=df.index, y=df['Upper_Bollinger'], mode='lines', name='Upper Bollinger',
+                       line=dict(color='red')))
+        fig.add_trace(
+            go.Scatter(x=df.index, y=df['Lower_Bollinger'], mode='lines', name='Lower Bollinger',
+                       line=dict(color='green')))
+        fig.add_trace(
+            go.Scatter(x=df.index, y=df['Middle_Band'], mode='lines', name='Middle Band', line=dict(color='blue')))
+
         # Add price channel traces
         fig.add_trace(
             go.Scatter(x=df.index, y=df['Upper_Bound'], mode='lines', name='Upper Bound', line=dict(color='blue')))
@@ -129,7 +151,7 @@ class StockAnalyzer:
         colors = df['종가'].diff().apply(lambda x: 'red' if x < 0 else 'green')
         fig.add_trace(go.Bar(x=df.index, y=df['거래량'], name='Volume', marker_color=colors), row=2, col=1)
 
-        fig.update_layout(title=f'Stock {stock_code} Candlestick, Price Channel, and Volume Chart',
+        fig.update_layout(title=f'Stock {stock_code} Candlestick, Bollinger Bands, Price Channel, and Volume Chart',
                           xaxis_title='Date',
                           yaxis_title='Price (₩)',
                           xaxis_rangeslider_visible=False,
