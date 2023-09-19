@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="65582dfa-cfca-4a07-8daa-fba18f993b9f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/stock-app.iml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/joongta_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/stock_analyzer.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/stock_analyzer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/stock_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/stock_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/Stocks.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Stocks.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,8 +28,8 @@
         <option value="package.json" />
         <option value="JavaScript File" />
         <option value="TypeScript File" />
-        <option value="Python Script" />
         <option value="TypeScript JSX File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -152,6 +154,7 @@
       <workItem from="1694941900794" duration="134000" />
       <workItem from="1694942070235" duration="9487000" />
       <workItem from="1695056869097" duration="1479000" />
+      <workItem from="1695124486270" duration="9463000" />
     </task>
     <servers />
   </component>

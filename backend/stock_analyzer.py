@@ -24,6 +24,15 @@ class StockAnalyzer:
         ]
 
     @staticmethod
+    def joongta_joongta(stock_codes, date):
+        """Retrieve stock data for a given date."""
+        return [
+            (stock.get_market_ticker_name(ticker), ticker, ohlcv["거래량"].iloc[0])
+            for ticker in stock_codes
+            if (ohlcv := stock.get_market_ohlcv_by_date(date, date, ticker)).empty is False
+        ]
+
+    @staticmethod
     def filter_stocks(stock_data, threshold_volume=100000):
         """Filter stocks based on a volume threshold."""
         return [i for i in stock_data if i[2] >= threshold_volume]
@@ -38,6 +47,7 @@ class StockAnalyzer:
         else:
             return None
 
+
     @staticmethod
     def calculate_vwap_with_pykrx(stock_codes):
         data = []
@@ -48,7 +58,7 @@ class StockAnalyzer:
             if vwap:
                 close = df['종가'].iloc[-1]
                 vwap_low, vwap_high = vwap * 0.95, vwap * 1.05
-                if vwap_low <= close <= vwap_high:
+                if vwap_low <= close <= vwap_high and StockAnalyzer.calculate_equation(df) > 0:
                     print(
                         f"TRUE : Stock Code: {stock_code}, Current price {close} is within the VWAP range ({vwap_low:.2f} <= {vwap:.2f} <= {vwap_high:.2f})")
                     ticker_name = stock.get_market_ticker_name(stock_code)
@@ -56,6 +66,27 @@ class StockAnalyzer:
             else:
                 print(f"Stock Code: {stock_code}, VWAP calculation is not possible (total volume is 0)")
         return data
+
+    @staticmethod
+
+
+
+    @staticmethod
+    def get_joongta_stocks(stock_codes):
+        return [StockAnalyzer.get_days_with_high_trading_value(stock) for stock in stock_codes]
+
+    @staticmethod
+    def calculate_equation(df):
+        # Calculate the sum for days when opening price is less than closing price
+        sum_o_less_than_c = sum(row['종가'] * row['거래량'] for index, row in df.iterrows() if row['시가'] < row['종가'])
+
+        # Calculate the sum for days when opening price is greater than closing price
+        sum_o_greater_than_c = sum(row['종가'] * row['거래량'] for index, row in df.iterrows() if row['시가'] > row['종가'])
+
+        # Calculate the difference
+        result = sum_o_less_than_c - sum_o_greater_than_c
+
+        return result
 
     @staticmethod
     def calculate_price_channel(df, period=20):

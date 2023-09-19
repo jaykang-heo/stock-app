@@ -23,6 +23,7 @@ const Stocks: React.FC = () => {
     const [fileName, setFileName] = useState<string>("");
     const [daysAgo, setDaysAgo] = useState<number>(2);
     const [channelRangeStocks, setChannelRangeStocks] = useState<string[]>([]);
+    const [joongtaStocks, setJoongtaStocks] = useState<string[]>([]);
 
 
 
@@ -45,6 +46,19 @@ const Stocks: React.FC = () => {
         }
     };
 
+     const fetchJoongtaData = async (filePath: string) => {
+    setLoading(true);
+    try {
+        const response = await axios.get(`http://localhost:8000/stocks/joongta?file_path=${filePath}`);
+        setJoongtaStocks(response.data);
+    } catch (error) {
+        console.error("Error fetching joongta stocks:", error);
+    } finally {
+        setLoading(false);
+    }
+};
+
+
     const handleUploadFile = async () => {
     // Clear previous stocks data
     setStocks([]);
@@ -66,6 +80,8 @@ const Stocks: React.FC = () => {
         fetchJangtaData();  // Fetch the jangta stock data after uploading the file
         fetchData();  // Fetch the danta stock data after uploading the file
         fetchChannelRangeData();
+        fetchJoongtaData(fileName);  // Fetch the joongta stock data after uploading the file
+
     } catch (error) {
         console.error("Error uploading file:", error);
     }
@@ -163,14 +179,44 @@ const Stocks: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {jangtaStocks.map(stock => (
-                            <tr key={stock}>
-                                <td>{stock}</td>
-                            </tr>
-                        ))}
+                        {jangtaStocks.map(stock => {
+                            const [name, code, volume] = parseStock(stock);
+                            return (
+                                <tr key={code}>
+                                    <td>{name}</td>
+                                    <td>{code}</td>
+                                    <td>{volume}</td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
+            {/* Joongta Stocks Column */}
+{/*<div className={styles.tableContainer}>*/}
+{/*    <h3>Joongta Stocks {joongtaStocks.length > 0 && <span>- Complete</span>}</h3>*/}
+{/*    <table className={styles.table}>*/}
+{/*        <thead>*/}
+{/*            <tr>*/}
+{/*                <th>Name</th>*/}
+{/*                <th>Code</th>*/}
+{/*                <th>Number</th>*/}
+{/*            </tr>*/}
+{/*        </thead>*/}
+{/*        <tbody>*/}
+{/*            {joongtaStocks.map(stock => {*/}
+{/*                const [name, code, volume] = parseStock(stock);*/}
+{/*                return (*/}
+{/*                    <tr key={code}>*/}
+{/*                        <td>{name}</td>*/}
+{/*                        <td>{code}</td>*/}
+{/*                        <td>{volume}</td>*/}
+{/*                    </tr>*/}
+{/*                );*/}
+{/*            })}*/}
+{/*        </tbody>*/}
+{/*    </table>*/}
+{/*</div>*/}
 
             {/* Danta Stocks Column */}
             <div className={styles.tableContainer}>
@@ -184,7 +230,7 @@ const Stocks: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {channelRangeStocks.map(stock => {
+                        {stocks.map(stock => {
                             const [name, code, volume] = parseStock(stock);
                             return (
                                 <tr key={code}>
