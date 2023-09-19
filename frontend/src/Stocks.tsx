@@ -246,7 +246,7 @@ const Stocks: React.FC = () => {
 
             {/* Stocks Within ±7% of Lower Channel Column */}
             <div className={styles.tableContainer}>
-                <h3>Stocks Within ±7% of Lower Channel {channelRangeStocks.length > 0 && <span>- Complete</span>}</h3>
+                <h3>Joongta {channelRangeStocks.length > 0 && <span>- Complete</span>}</h3>
                 <table className={styles.table}>
                     <thead>
                         <tr>
