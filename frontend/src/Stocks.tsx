@@ -1,6 +1,7 @@
 import React, {ButtonHTMLAttributes, FC, useState} from 'react';
 import axios from 'axios';
 import styles from './Stocks.module.css';
+import {match} from "node:assert";
 
 
 interface PrettyButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -136,6 +137,17 @@ const Stocks: React.FC = () => {
         }
         return ["", "", 0];
     };
+
+    const parseJangtaStock = (stock: string): [string, string, number, number, number] => {
+        console.log(stock)
+        const matches = stock.match(/\('([^']*)', '([^']*)', (-?\d+(\.\d+)?),? ?(-?\d+(\.\d+)?)?,? ?(-?\d+(\.\d+)?)?\)/);
+        if (matches) {
+            return [matches[1], matches[2], Number(matches[3]), Number(matches[5]) || 0, Number(matches[7]) || 0];
+        }
+        return ["", "", 0, 0, 0];
+    };
+
+
    const handleNameClick = async (stockCode: string) => {
         try {
             const response = await axios.get(`http://localhost:8000/stocks/chart/candle/${stockCode}`);
@@ -180,12 +192,14 @@ const Stocks: React.FC = () => {
                     </thead>
                     <tbody>
                         {jangtaStocks.map(stock => {
-                            const [name, code, volume] = parseStock(stock);
+                            const [name, code, volume, diff, line] = parseJangtaStock(stock);
                             return (
-                                <tr key={code}>
+                                <tr key={""}>
                                     <td>{name}</td>
                                     <td>{code}</td>
                                     <td>{volume}</td>
+                                    <td>{diff}</td>
+                                    <td>{line}</td>
                                 </tr>
                             );
                         })}

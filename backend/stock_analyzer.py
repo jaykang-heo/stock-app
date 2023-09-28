@@ -7,6 +7,7 @@ from plotly.subplots import make_subplots
 class StockAnalyzer:
     TODAY = datetime.datetime.now().strftime('%Y%m%d')
     START_DATE = "19800101"
+    JANGTA_DIFF = 5
 
     @staticmethod
     def get_date_n_days_ago(n):
@@ -47,7 +48,6 @@ class StockAnalyzer:
         else:
             return None
 
-
     @staticmethod
     def calculate_vwap_with_pykrx(stock_codes):
         data = []
@@ -57,19 +57,20 @@ class StockAnalyzer:
 
             if vwap:
                 close = df['종가'].iloc[-1]
-                vwap_low, vwap_high = vwap * 0.95, vwap * 1.05
+
+                # Calculate Percentage Difference
+                percentage_diff = round(((close - vwap) / vwap) * 100, 2)
+
+                vwap_low, vwap_high = vwap * (1 - (0.01 * StockAnalyzer.JANGTA_DIFF)), vwap * (
+                            1 + (0.01 * StockAnalyzer.JANGTA_DIFF))
                 if vwap_low <= close <= vwap_high and StockAnalyzer.calculate_equation(df) > 0:
                     print(
-                        f"TRUE : Stock Code: {stock_code}, Current price {close} is within the VWAP range ({vwap_low:.2f} <= {vwap:.2f} <= {vwap_high:.2f})")
+                        f"TRUE : Stock Code: {stock_code}, Current price {close} is within the VWAP range ({vwap_low:.2f} <= {vwap:.2f} <= {vwap_high:.2f}). Percentage Difference: {percentage_diff:.2f}%")
                     ticker_name = stock.get_market_ticker_name(stock_code)
-                    data.append((ticker_name, stock_code, df['거래량'].sum()))
+                    data.append((ticker_name, stock_code, df['거래량'].sum(), percentage_diff, round(vwap)))
             else:
                 print(f"Stock Code: {stock_code}, VWAP calculation is not possible (total volume is 0)")
         return data
-
-    @staticmethod
-
-
 
     @staticmethod
     def get_joongta_stocks(stock_codes):

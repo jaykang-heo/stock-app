@@ -21,7 +21,9 @@ def ensure_file_uploaded():
 def get_stocks_jangta(file_path: str = Depends(ensure_file_uploaded)):
     stock_codes = StockFileManager.get_stock_codes_from_csv(file_path)
     stock_data = StockAnalyzer.calculate_vwap_with_pykrx(stock_codes)
-    filtered_stocks = process_stock_data(stock_data)
+    filtered_stocks = set(process_stock_data(stock_data))
+    for i in filtered_stocks:
+        print(i)
     return [str(i) for i in filtered_stocks]
 
 @router.get("/stocks/joongta", response_model=List[str])
