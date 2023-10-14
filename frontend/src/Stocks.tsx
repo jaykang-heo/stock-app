@@ -25,6 +25,8 @@ const Stocks: React.FC = () => {
     const [daysAgo, setDaysAgo] = useState<number>(2);
     const [channelRangeStocks, setChannelRangeStocks] = useState<string[]>([]);
     const [joongtaStocks, setJoongtaStocks] = useState<string[]>([]);
+    const [selectedDate, setSelectedDate] = useState<string>(""); // New date state
+
 
 
 
@@ -74,14 +76,16 @@ const Stocks: React.FC = () => {
 
     const formData = new FormData();
     formData.append('file', selectedFile);
+    console.log(selectedFile)
+    console.log(formData)
 
     try {
         const response = await axios.post('http://localhost:8000/upload-csv/', formData);
         console.log(response.data);
         fetchJangtaData();  // Fetch the jangta stock data after uploading the file
-        fetchData();  // Fetch the danta stock data after uploading the file
-        fetchChannelRangeData();
-        fetchJoongtaData(fileName);  // Fetch the joongta stock data after uploading the file
+        // fetchData();  // Fetch the danta stock data after uploading the file
+        // fetchChannelRangeData();
+        // fetchJoongtaData(fileName);  // Fetch the joongta stock data after uploading the file
 
     } catch (error) {
         console.error("Error uploading file:", error);
@@ -96,7 +100,7 @@ const Stocks: React.FC = () => {
     const fetchJangtaData = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('http://localhost:8000/stocks/jangta/');
+            const response = await axios.get(`http://localhost:8000/stocks/jangta/?days_ago=${daysAgo}`);
             setJangtaStocks(response.data);
         } catch (error) {
             console.error("Error fetching jangta stocks:", error);

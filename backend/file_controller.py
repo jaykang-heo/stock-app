@@ -4,14 +4,26 @@ from file_config import FileConfig  # Import the new class
 
 router = APIRouter()
 
+
 @router.post("/upload-csv/")
 async def upload_csv(file: UploadFile = File(...)):
-    default_filename = "stock.csv"
-    file_location = f"uploads/{default_filename}"
+    # Get the original filename
+    original_filename = file.filename
+
+    # Construct the file location using the original filename
+    file_location = f"uploads/{original_filename}"
+
+    # Save the uploaded file to the constructed file location
     save_uploaded_file(file, file_location)
-    FileConfig.set_uploaded_file_path(file_location)  # Use the class method to update the path
+
+    # Set the file path in your configuration
+    FileConfig.set_uploaded_file_path(file_location)
+
     print(f"File uploaded to: {FileConfig.get_uploaded_file_path()}")
-    return {"filename": default_filename}
+
+    # Return the original filename in the response
+    return {"filename": original_filename}
+
 
 def save_uploaded_file(uploaded_file, file_path):
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
