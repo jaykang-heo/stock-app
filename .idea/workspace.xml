@@ -6,10 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="65582dfa-cfca-4a07-8daa-fba18f993b9f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/file_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/file_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/joongta_service.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/stock_analyzer.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/stock_analyzer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/stock_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/stock_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/stock_file_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/stock_file_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/Stocks.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Stocks.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -7,7 +7,7 @@ from plotly.subplots import make_subplots
 class StockAnalyzer:
     TODAY = datetime.datetime.now().strftime('%Y%m%d')
     START_DATE = "19800101"
-    JANGTA_DIFF = 5
+    JANGTA_DIFF = 7
 
 
     @staticmethod
@@ -82,32 +82,6 @@ class StockAnalyzer:
         sum_o_greater_than_c = sum(row['종가'] * row['거래량'] for index, row in df.iterrows() if row['시가'] > row['종가'])
         return sum_o_less_than_c - sum_o_greater_than_c
 
-    @staticmethod
-    def calculate_price_channel(df, period=20):
-        df['Upper_Channel'] = df['고가'].rolling(window=period).max()
-        df['Lower_Channel'] = df['저가'].rolling(window=period).min()
-        return df
-
-    @classmethod
-    def is_close_within_range_of_lower_channel(cls, stock_codes):
-        data = []
-        for stock_code in stock_codes:
-            df = stock.get_market_ohlcv(cls.START_DATE, cls.TODAY, stock_code)
-            df = cls.calculate_price_channel(df)
-            latest_data = df.iloc[-1]
-
-            close_price = latest_data['종가']
-            lower_channel = latest_data['Lower_Channel']
-            lower_channel_5_percent = lower_channel * 0.07
-
-            is_within_range = (lower_channel - lower_channel_5_percent) <= close_price <= (
-                        lower_channel + lower_channel_5_percent)
-            percent_difference_from_lower_channel = round(((close_price - lower_channel) / lower_channel) * 100, 2)
-
-            if is_within_range:
-                ticker_name = stock.get_market_ticker_name(stock_code)
-                data.append((ticker_name, stock_code, latest_data['거래량'].sum(), percent_difference_from_lower_channel))
-        return data
 
     @classmethod
     def draw_candle_chart(cls, stock_code: int):
