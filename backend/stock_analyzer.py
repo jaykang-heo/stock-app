@@ -30,6 +30,10 @@ class StockAnalyzer:
     def get_date_n_days_ago(n):
         return (datetime.datetime.now() - datetime.timedelta(days=n)).strftime('%Y%m%d')
 
+    @staticmethod
+    def get_today():
+        return datetime.datetime.now().strftime('%Y%m%d')
+
     @classmethod
     def fetch_stock_data(cls, stock_codes, date):
         return [
@@ -73,7 +77,6 @@ class StockAnalyzer:
         if vwap_low <= close <= vwap_high and cls.calculate_equation(df) > 0:
             ticker_name = stock.get_market_ticker_name(stock_code)
             data.append((ticker_name, stock_code, df['거래량'].sum(), percentage_diff, round(vwap)))
-
         return data
 
     @staticmethod
@@ -82,6 +85,12 @@ class StockAnalyzer:
         sum_o_greater_than_c = sum(row['종가'] * row['거래량'] for index, row in df.iterrows() if row['시가'] > row['종가'])
         return sum_o_less_than_c - sum_o_greater_than_c
 
+    @classmethod
+    def analyze_all_stock(cls, today_date):
+        kospi_stocks = stock.get_market_ohlcv(today_date, "KOSPI")
+        kosdaq_stocks = stock.get_market_ohlcv(today_date, "KOSDAQ")
+        stocks = kospi_stocks.index.tolist() + kosdaq_stocks.index.tolist()
+        return cls.analyze_stocks(stocks, today_date)
 
     @classmethod
     def draw_candle_chart(cls, stock_code: int):

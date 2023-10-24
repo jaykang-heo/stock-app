@@ -27,6 +27,14 @@ def get_stocks_jangta(days_ago: int = 0, file_path: str = Depends(ensure_file_up
     stock_data = StockAnalyzer.analyze_stocks(stock_codes, today)
     print(stock_data)
     filtered_stocks = set(process_stock_data(stock_data))
+    get_stocks_jangta_one(file_path)
+    return [str(i) for i in filtered_stocks]
+
+@router.get("/stocks/jangta-1", response_model=List[str])
+def get_stocks_jangta_one(file_path: str = Depends(ensure_file_uploaded)):
+    stock_data = StockAnalyzer.analyze_all_stock(StockAnalyzer.get_today())
+    filtered_stocks = set(process_stock_data(stock_data))
+    print(filtered_stocks)
     return [str(i) for i in filtered_stocks]
 
 

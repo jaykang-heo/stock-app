@@ -1,6 +1,7 @@
 import csv
 from stock_analyzer import StockAnalyzer
 
+
 class StockFileManager:
 
     @staticmethod
